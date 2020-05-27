@@ -1,4 +1,4 @@
-#### Cookbook app
+# Cookbook app
 
 Created to enable users to share their recipes
 
