@@ -1,0 +1,17 @@
+.RatingsList {
+    background-color: rgb(253, 237, 206);
+    text-align: left;
+    margin-left: 10px;
+    width: 100;
+}
+
+.Rating {
+    margin-left: 10px;
+    width: 450px;
+    font-size: large;
+}
+
+.Par {
+    font-size: medium;
+    font-style: italic;
+}

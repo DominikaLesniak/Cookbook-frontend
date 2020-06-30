@@ -2,6 +2,9 @@ import React, { Component } from 'react';
 import { withRouter } from "react-router-dom"
 import Image from 'react-bootstrap/Image';
 import axios from 'axios';
+import Ratings from '../rating/Ratings';
+import Button from 'react-bootstrap/Button';
+import RatingSection from '../rating/RatingSection';
 
 class Recipe extends Component {
     constructor(props) {
@@ -19,9 +22,11 @@ class Recipe extends Component {
                 }
             ],
             averageRating: 0,
-            authorId: ""
+            authorId: "",
+            ratingsNumber: "",
+            ratingsVisible: false
         }
-
+        this.showRatings = this.showRatings.bind(this);
     }
     componentDidMount() {
         console.log("id: " + this.state.id);
@@ -34,7 +39,8 @@ class Recipe extends Component {
                     imageUrl: recipe.imageUrl,
                     ingredients: recipe.ingredients,
                     averageRating: recipe.averageRating,
-                    authorId: recipe.authorId
+                    authorId: recipe.authorId,
+                    ratingsNumber: recipe.ratingsNumber
                 });
                 console.log(recipe);
             })
@@ -43,6 +49,11 @@ class Recipe extends Component {
             });
     }
 
+    showRatings() {
+        this.setState(prevState => ({
+            ratingsVisible: !prevState.ratingsVisible
+        }));
+    }
 
     render() {
         return (
@@ -58,6 +69,8 @@ class Recipe extends Component {
                 {this.state.text.split("\\t").map(step =>
                     <p>{step}</p>)}
                 {this.state.imageUrl && <Image src={this.state.imageUrl} thumbnail />}
+                <Button variant="light" onClick={this.showRatings}>Show ratings</Button>
+                {this.state.ratingsVisible && <RatingSection recipeId={this.state.id} />}
             </div>);
     }
 }

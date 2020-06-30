@@ -34,6 +34,7 @@ class SignInManager extends Component {
                     axios.get("http://localhost:8080/user/profile", config)
                     .then(res => {
                         const newUser = {
+                            id: res.data.id,
                             name: res.data.username,
                             email: res.data.email,
                             points: res.data.points,
