@@ -18,6 +18,7 @@ import { userContext } from './components/userContext';
 import Button from 'react-bootstrap/Button';
 import HomePage from './components/dashboard/HomePage';
 import Recipe from './components/recipe/Recipe';
+import NewRecipeManager from './components/recipe/NewRecipeManager';
 
 function logSomething() {
   console.log("Button was clicked.");
@@ -85,16 +86,16 @@ class App extends React.Component {
 
               {value.user.name
                 ? <em>{value.user.name} logged in</em>
-                : <Link style={padding} to="/login">Log in</Link>
+                : <Link style={padding} to="/login">Sign in</Link>
               }
-              {value.user.name && <Button variant="info" size="sm" onClick={this.logout}> Wyloguj </Button>}
+              {value.user.name && <Button variant="info" size="sm" onClick={this.logout}> Log out </Button>}
             </div>
 
             <Switch>
               <Route path="/profile"
-                render={() => value.user.name 
-                ? <Profile /> : 
-                <Redirect to="/login" />} 
+                render={() => value.user.name
+                  ? <Profile /> :
+                  <Redirect to="/login" />}
               />
               <Route path="/users">
                 <Heading title="React" text="text" />
@@ -105,11 +106,18 @@ class App extends React.Component {
               <Route path="/recipe/:id">
                 <Recipe />
               </Route>
+              <Route path="/newRecipe"
+                render={() => value.user.name
+                  ? <NewRecipeManager /> :
+                  <Redirect to="/login" />}
+              />
               <Route path="/">
                 <HomePage />
               </Route>
+
             </Switch>
-          </Router></userContext.Provider>
+          </Router>
+        </userContext.Provider>
       </div>
     );
   }

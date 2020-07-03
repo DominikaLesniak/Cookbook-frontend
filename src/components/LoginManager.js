@@ -32,8 +32,8 @@ export default class LoginManager extends Component {
 
     render() {
         return (<div>
-            <Button variant = "info" size="sm" onClick={this.handleSignInClick}>Zaloguj</Button>
-            <Button variant = "info" size="sm" onClick={this.handleSignUpClick}>Zarejestruj się</Button>
+            <Button variant = "info" size="sm" onClick={this.handleSignInClick}>Sign in</Button>
+            <Button variant = "info" size="sm" onClick={this.handleSignUpClick}>Create account</Button>
             <ChooseForm signIn={this.state.signInClicked} signUp={this.state.signUpClicked}/>
 
         </div>);

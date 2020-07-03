@@ -2,9 +2,11 @@ import React, { Component } from 'react';
 import { withRouter } from "react-router-dom"
 import Image from 'react-bootstrap/Image';
 import axios from 'axios';
-import Ratings from '../rating/Ratings';
+import { userContext } from '../userContext';
 import Button from 'react-bootstrap/Button';
 import RatingSection from '../rating/RatingSection';
+import NewRecipeManager from './NewRecipeManager';
+import DeleteRecipeManager from './DeleteRecipeManager';
 
 class Recipe extends Component {
     constructor(props) {
@@ -23,10 +25,15 @@ class Recipe extends Component {
             ],
             averageRating: 0,
             authorId: "",
+            authorName: "",
             ratingsNumber: "",
-            ratingsVisible: false
+            ratingsVisible: false,
+            edit: false,
+            delete: false
         }
         this.showRatings = this.showRatings.bind(this);
+        this.handleEditRecipe = this.handleEditRecipe.bind(this);
+        this.handleDeleteRecipe = this.handleDeleteRecipe.bind(this);
     }
     componentDidMount() {
         console.log("id: " + this.state.id);
@@ -37,11 +44,16 @@ class Recipe extends Component {
                     name: recipe.name,
                     text: recipe.text,
                     imageUrl: recipe.imageUrl,
-                    ingredients: recipe.ingredients,
                     averageRating: recipe.averageRating,
                     authorId: recipe.authorId,
+                    authorName: recipe.authorName,
                     ratingsNumber: recipe.ratingsNumber
                 });
+                if(recipe.ingredients !== undefined) {
+                    this.setState({
+                        ingredients: recipe.ingredients
+                    })
+                }
                 console.log(recipe);
             })
             .catch(error => {
@@ -55,23 +67,69 @@ class Recipe extends Component {
         }));
     }
 
+    handleEditRecipe() {
+        this.setState(prevState => ({
+            edit: !prevState.edit
+        }));
+    }
+
+
+    handleDeleteRecipe() {
+        this.setState(prevState => ({
+            delete: !prevState.delete
+        }));
+    }
+
     render() {
-        return (
-            <div>
-                <h2>{this.state.name}</h2>
-                {this.state.averageRating && <h6>{this.state.averageRating}/5</h6>}
-                <h4>Ingriedients:</h4>
-                <ul>
-                    {this.state.ingredients.map(ingredient =>
-                        <li>{ingredient.name + ": "+ ingredient.amount}</li>)}
-                </ul>
-                <h4>Preparation:</h4>
-                {this.state.text.split("\\t").map(step =>
-                    <p>{step}</p>)}
-                {this.state.imageUrl && <Image src={this.state.imageUrl} thumbnail />}
-                <Button variant="light" onClick={this.showRatings}>Show ratings</Button>
-                {this.state.ratingsVisible && <RatingSection recipeId={this.state.id} />}
-            </div>);
+        if (this.state.edit) {
+            const recipe = {
+                recipeId: this.state.id,
+                name: this.state.name,
+                text: this.state.text,
+                imageUrl: this.state.imageUrl,
+                ingredients: this.state.ingredients,
+                authorId: this.state.authorId
+            }
+            return (
+                <div>
+                    <NewRecipeManager recipe={recipe} handleEditRecipe={this.handleEditRecipe} />
+                </div>
+            )
+        }
+        else
+            return (
+                <div>
+                    <userContext.Consumer>
+                        {({ user }) => {
+                            return (
+                                <div>
+                                    <h2>{this.state.name}</h2>
+                                    <p>by {this.state.authorName}</p>
+                                    {(user.id === this.state.authorId) &&
+                                        <Button variant="warning" size="sm" onClick={this.handleEditRecipe}>Edit</Button>}
+                                    {(user.id === this.state.authorId) &&
+                                        <Button variant="danger" size="sm" onClick={this.handleDeleteRecipe}>Delete</Button>
+                                    }
+                                    {this.state.delete &&
+                                        <DeleteRecipeManager recipeId={this.state.id} cancelDelete={this.handleDeleteRecipe} />
+                                    }
+                                    {this.state.averageRating && <h6>{this.state.averageRating}/5</h6>}
+                                    <h4>Ingredients:</h4>
+                                    <ul>
+                                        {this.state.ingredients.map(ingredient =>
+                                            <li>{ingredient.name + ": " + ingredient.amount}</li>)}
+                                    </ul>
+                                    <h4>Preparation:</h4>
+                                    {this.state.text.split("\\t").map(step =>
+                                        <p>{step}</p>)}
+                                    {this.state.imageUrl && <Image src={this.state.imageUrl} thumbnail />}
+                                    <Button variant="warning" onClick={this.showRatings}>Show ratings</Button>
+                                    {this.state.ratingsVisible && <RatingSection recipeId={this.state.id} />}
+                                </div>
+                            )
+                        }}
+                    </userContext.Consumer>
+                </div>);
     }
 }
 

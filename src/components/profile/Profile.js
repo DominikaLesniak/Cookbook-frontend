@@ -1,15 +1,19 @@
 import React, { Component } from 'react';
 import { userContext } from '../userContext';
 import AccountActions from './AccountActions';
+import {withRouter} from 'react-router-dom';
 import axios from 'axios';
-import Recipes from '../recipe/Recipes'
+import Recipes from '../recipe/Recipes';
+import Button from 'react-bootstrap/Button';
+import './Profile.css';
 
-export default class Profile extends Component {
+class Profile extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            // recipes: []
         }
+
+        this.handleNewRecipeButtonClick = this.handleNewRecipeButtonClick.bind(this);
     }
     componentDidMount() {
         const config = {
@@ -28,11 +32,8 @@ export default class Profile extends Component {
             });
     }
 
-    handleSignInClick() {
-        this.setState(prevState => ({
-            signInClicked: !prevState.signInClicked,
-            signUpClicked: false
-        }));
+    handleNewRecipeButtonClick() {
+        this.props.history.push("/newRecipe");
     }
 
     render() {
@@ -49,6 +50,7 @@ export default class Profile extends Component {
                                 <p>Owned recipes: {user.ownedRecipeNumber}</p>
                                 <p>Ratings posted: {user.ratingsNumber}</p>
                                 <AccountActions />
+                                <Button className = "ButtonProp"  onClick={this.handleNewRecipeButtonClick}>Add new recipe</Button>
                                 {this.state.recipes &&
                                     <div>
                                         <h2>Book recipes:</h2>
@@ -60,3 +62,5 @@ export default class Profile extends Component {
             </div>);
     }
 }
+
+export default withRouter(Profile);
