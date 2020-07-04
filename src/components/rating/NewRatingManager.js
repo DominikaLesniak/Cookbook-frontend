@@ -6,16 +6,29 @@ import { userContext } from '../userContext';
 import ReactStars from "react-rating-stars-component";
 import axios from 'axios';
 import './Rating.css';
+import Col from 'react-bootstrap/Col';
 
 export default class NewRatingManager extends Component {
     constructor(props) {
         super(props);
-
-        this.state = {
-            comment: "",
-            rate: 0,
-            authorId: 0,
-            recipeId: this.props.recipeId
+        if (this.props.rating !== undefined) {
+            console.log("editing rating");
+            console.log(this.props.rating);
+            this.state = {
+                comment: this.props.rating.comment,
+                rate: this.props.rating.rate,
+                authorId: this.props.rating.authorId,
+                ratingId: this.props.rating.id,
+                edit: true
+            }
+        } else {
+            this.state = {
+                comment: "",
+                rate: 0,
+                authorId: 0,
+                recipeId: this.props.recipeId,
+                edit: false
+            }
         }
         this.handleChange = this.handleChange.bind(this);
         this.ratingChange = this.ratingChange.bind(this);
@@ -36,7 +49,7 @@ export default class NewRatingManager extends Component {
 
     handleSubmit(user) {
         return event => {
-             event.preventDefault();
+            event.preventDefault();
             if (user.id !== undefined) {
                 console.log("posting rating");
 
@@ -52,16 +65,25 @@ export default class NewRatingManager extends Component {
                         "Content-Type": "application/json"
                     }
                 }
-                axios.post(`http://localhost:8080/recipe/${this.state.recipeId}/rating`, data, config)
+
+                if(this.state.edit) {
+                    axios.put(`http://localhost:8080/recipe/${this.state.recipeId}/rating/${this.state.ratingId}`, data, config)
                     .then(res => {
-                        console.log("rating posted");
-                        this.setState({
-                            passwordChange: false
-                        })
+                        console.log("rating edited");
+                        this.props.editionEnd();
                     })
                     .catch(error => {
                         console.log("Authorizarion Exception", error);
                     });
+                } else {
+                axios.post(`http://localhost:8080/recipe/${this.state.recipeId}/rating`, data, config)
+                    .then(res => {
+                        console.log("rating posted");
+                    })
+                    .catch(error => {
+                        console.log("Authorizarion Exception", error);
+                    });
+                }
             } else {
                 console.log("nie");
             }
@@ -70,12 +92,12 @@ export default class NewRatingManager extends Component {
 
     render() {
         return (
-            <div>
+            <div className="RatingForm">
                 <userContext.Consumer>
                     {({ user }) => {
                         return (
                             <div>
-                                <Form className="Rating" onSubmit={this.handleSubmit(user)}>
+                                <Form onSubmit={this.handleSubmit(user)}>
                                     <Form.Group className="Rating" controlId="rate">
                                         <Form.Label>Rate</Form.Label>
                                         <ReactStars
@@ -97,9 +119,10 @@ export default class NewRatingManager extends Component {
                                             value={this.state.comment}
                                         />
                                     </Form.Group>
-                                    <Button variant="light" type="submit">
-                                        Post rating
-                                    </Button>
+                                    <Col md={12}>
+                                        <Button variant="light" type="submit">
+                                            Post rating
+                                    </Button></Col>
                                 </Form>
                             </div>)
                     }}

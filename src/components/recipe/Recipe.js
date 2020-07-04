@@ -7,6 +7,8 @@ import Button from 'react-bootstrap/Button';
 import RatingSection from '../rating/RatingSection';
 import NewRecipeManager from './NewRecipeManager';
 import DeleteRecipeManager from './DeleteRecipeManager';
+import './Recipe.css';
+import Col from 'react-bootstrap/Col';
 
 class Recipe extends Component {
     constructor(props) {
@@ -102,7 +104,7 @@ class Recipe extends Component {
                     <userContext.Consumer>
                         {({ user }) => {
                             return (
-                                <div>
+                                <div className="Recipe">
                                     <h2>{this.state.name}</h2>
                                     <p>by {this.state.authorName}</p>
                                     {(user.id === this.state.authorId) &&
@@ -123,7 +125,7 @@ class Recipe extends Component {
                                     {this.state.text.split("\\t").map(step =>
                                         <p>{step}</p>)}
                                     {this.state.imageUrl && <Image src={this.state.imageUrl} thumbnail />}
-                                    <Button variant="warning" onClick={this.showRatings}>Show ratings</Button>
+                                    <Col md={12}><Button variant="warning" onClick={this.showRatings}>Show ratings</Button></Col>
                                     {this.state.ratingsVisible && <RatingSection recipeId={this.state.id} />}
                                 </div>
                             )

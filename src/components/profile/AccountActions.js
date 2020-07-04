@@ -33,8 +33,8 @@ export default class AccountActions extends Component {
     render() {
         return (
             <div>
-                <Button variant="light" onClick={this.handleChangePassword}>Change password</Button>
-                <Button variant="light" onClick={this.handleDeleteAccount}>Delete account</Button>
+                <Button variant="warning" onClick={this.handleChangePassword}>Change password</Button>
+                <Button variant="warning" onClick={this.handleDeleteAccount}>Delete account</Button>
                 {this.state.passwordChange && <ChangePasswordManager />}
                 {this.state.accountDelete && <DeleteAccountManager/>}
             </div>);

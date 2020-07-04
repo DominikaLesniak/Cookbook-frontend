@@ -5,3 +5,10 @@
     margin: 10%;
     width: auto;
 }
+
+.Recipe {
+    background-color: white;
+    margin-left: 10%;
+    margin-right: 10%;
+    margin-top: 10px;
+}
