@@ -6,17 +6,20 @@
 
 .Rating {
     margin-top: 5px;
-    margin-left: 25%;
-    width: 550px;
+    margin-left: inherit;
+    width: inherit;
     font-size: large;
     background-color: white;
 }
 
 .RatingForm {
+    border-top-color: rgb(253, 237, 206);
+    border-top-width: 5px;
+    border-top-style: solid;
     text-align: center;
-    margin-top: 5px;
-    margin-left: 25%;
-    width: 550px;
+    margin-top: 25px;
+    padding-bottom: 5px;
+    width: inherit;
     font-size: large;
     background-color: white;
 }

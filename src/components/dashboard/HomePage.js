@@ -36,8 +36,7 @@ class HomePage extends Component {
     render() {
         return (
             <div>
-                <StyledExample text="Cookbook"></StyledExample>
-                {/* {localStorage.getItem("JWT") && <Profile/>} */}
+                <h1>Our recipes:</h1>
                 {this.state.recipes && <Recipes recipes={this.state.recipes} />}
             </div>);
     }

@@ -12,7 +12,6 @@ class RatingsSection extends Component {
     render() {
         return (
             <div className="RatingsList">
-                {this.props.recipeId && <NewRatingManager recipeId={this.props.recipeId} />}
                 {this.props.recipeId && <Ratings recipeId={this.props.recipeId} />}
             </div>);
     }

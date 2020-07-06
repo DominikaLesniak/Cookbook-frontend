@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import Button from 'react-bootstrap/Button';
-import SignInManager from './signIn/SignInManager';
-import SignUpManager from './signUp/SignUpManager';
+import SignInManager from './SignInManager';
+import SignUpManager from './SignUpManager';
 
 export default class LoginManager extends Component {
     constructor(props) {
@@ -31,11 +31,11 @@ export default class LoginManager extends Component {
     }
 
     render() {
-        return (<div>
+        return (
+        <div>
             <Button variant = "warning" onClick={this.handleSignInClick}>Sign in</Button>
             <Button variant = "warning" onClick={this.handleSignUpClick}>Create account</Button>
             <ChooseForm signIn={this.state.signInClicked} signUp={this.state.signUpClicked}/>
-
         </div>);
     }
 }

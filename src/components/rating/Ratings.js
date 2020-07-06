@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import ListGroup from 'react-bootstrap/ListGroup';
 import Col from 'react-bootstrap/Col';
 import Row from 'react-bootstrap/Row';
@@ -9,37 +9,66 @@ import ReactStars from "react-rating-stars-component";
 import axios from 'axios';
 import './Rating.css';
 import NewRatingManager from './NewRatingManager';
+import DeleteRatingManager from './DeleteRatingManager';
 
 const Ratings = props => {
     const arr = [];
     const [ratings, setRatings] = useState(arr);
     const [editId, setEditId] = useState(arr);
+    const [deleteId, setDeleteId] = useState(arr);
+    const [refresh, setRefresh] = useState(true);
+    const [authors, setAuthors] = useState(arr);
+    const messagesEndRef = useRef(null)
 
+  const scrollToBottom = () => {
+    messagesEndRef.current.scrollIntoView({ behavior: "smooth" })
+  }
+
+    function refreshRatings() {
+        if (refresh === true) {
+            axios.get("http://localhost:8080/recipe/" + props.recipeId + "/rating")
+                .then(res => {
+                    const r = res.data.ratings;
+                    setRatings(r);
+                    setEditId([]);
+                    setRefresh(false);
+                    scrollToBottom();
+                })
+                .catch(error => {
+                    console.log("Some Exception happened: ", error);
+                });
+        }
+    }
     useEffect(() => {
-        console.log("RATINGS for " + props.recipeId);
-        axios.get("http://localhost:8080/recipe/" + props.recipeId + "/rating")
-            .then(res => {
-                const r = res.data.ratings;
-                console.log(r);
-                setRatings(r);
-                // console.log("RATINGS for " + props.recipeId);
+        refreshRatings();
+        if (ratings !== undefined) {
+            const authors = ratings.map((rating) => {
+                return rating.authorId;
             })
-            .catch(error => {
-                console.log("Some Exception happened: ", error);
-            });
-    }, [])
+            setAuthors(authors);
+        } else {
+            setAuthors([]);
+        }
+    }, [refresh])
     return (
         <div>
             <userContext.Consumer>
                 {({ user }) => {
                     return (
-                        <div>
+                        <div ref={messagesEndRef}>
+                            {(user === undefined || !authors.includes(user.id)) && <NewRatingManager recipeId={props.recipeId} editionEnd={() => setEditId([])} refreshActive={() => setRefresh(true)} />}
                             {ratings && <ListGroup >
                                 {ratings.map(rating => {
                                     if (editId.includes(rating.id)) {
-                                        return(
-                                        <NewRatingManager rating={rating} editionEnd={() => setEditId([])} />)
-                                    } else {
+                                        return (
+                                            <NewRatingManager rating={rating} editionEnd={() => setEditId([])} refreshActive={() => setRefresh(true)} />)
+                                    } else if (deleteId.includes(rating.id)) {
+                                        return (
+                                            <DeleteRatingManager recipeId={props.recipeId} rating={rating}
+                                                deleteEnd={() => setDeleteId([])} refreshActive={() => setRefresh(true)} />
+                                        )
+                                    }
+                                    else {
                                         return (
                                             <ListGroup.Item className="Rating" key={rating.authorId} variant="light">
                                                 <Row>
@@ -53,9 +82,10 @@ const Ratings = props => {
                                                             </Button>}
                                                     </Col>
                                                     <Col md={1}>
-                                                        {(user.id === rating.authorId) && <Button variant="danger" size="sm">
-                                                            <text className="ButtonText">Delete</text>
-                                                        </Button>}
+                                                        {(user.id === rating.authorId) &&
+                                                            <Button variant="danger" size="sm" onClick={() => setDeleteId(currentArray => [...currentArray, rating.id])}>
+                                                                <text className="ButtonText">Delete</text>
+                                                            </Button>}
                                                     </Col>
                                                 </Row>
                                                 <ReactStars
@@ -80,9 +110,3 @@ const Ratings = props => {
 }
 
 export default withRouter(Ratings);
-
-function edit(rating) {
-    return (
-        <NewRatingManager rating={rating} />
-    )
-}

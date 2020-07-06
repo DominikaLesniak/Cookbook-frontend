@@ -11,7 +11,7 @@ import {
 import logo from './logo.svg';
 import './App.css';
 
-import LoginManager from './components/LoginManager';
+import LoginManager from './components/signIn/LoginManager';
 import { Heading } from './components/heading/Heading';
 import Profile from './components/profile/Profile';
 import { userContext } from './components/userContext';
@@ -19,6 +19,9 @@ import Button from 'react-bootstrap/Button';
 import HomePage from './components/dashboard/HomePage';
 import Recipe from './components/recipe/Recipe';
 import NewRecipeManager from './components/recipe/NewRecipeManager';
+import RankingSection from './components/ranking/RankingSection';
+import User from './components/profile/User';
+import NavigationBar from './components/dashboard/NavigationBar';
 
 function logSomething() {
   console.log("Button was clicked.");
@@ -79,32 +82,24 @@ class App extends React.Component {
       <Heading title="React" text="text"/> */}
         <userContext.Provider value={value}>
           <Router>
-            <div>
-              <Link style={padding} to="/">Home page</Link>
-              <Link style={padding} to="/users">Ranking</Link>
-              {value.user.name && <Link style={padding} to="/profile">Profile</Link>}
-
-              {value.user.name
-                ? <em>{value.user.name} logged in</em>
-                : <Link style={padding} to="/login">Sign in</Link>
-              }
-              {value.user.name && <Button variant="info" size="sm" onClick={this.logout}> Log out </Button>}
-            </div>
-
+            <NavigationBar user={value.user} logout={this.logout} />
             <Switch>
               <Route path="/profile"
                 render={() => value.user.name
                   ? <Profile /> :
                   <Redirect to="/login" />}
               />
-              <Route path="/users">
-                <Heading title="React" text="text" />
+              <Route path="/ranking">
+                <RankingSection />
               </Route>
               <Route path="/login">
                 <LoginManager />
               </Route>
               <Route path="/recipe/:id">
                 <Recipe />
+              </Route>
+              <Route path="/user/:id">
+                <User />
               </Route>
               <Route path="/newRecipe"
                 render={() => value.user.name

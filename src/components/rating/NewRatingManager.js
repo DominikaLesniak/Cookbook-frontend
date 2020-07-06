@@ -71,6 +71,7 @@ export default class NewRatingManager extends Component {
                     .then(res => {
                         console.log("rating edited");
                         this.props.editionEnd();
+                        this.props.refreshActive();
                     })
                     .catch(error => {
                         console.log("Authorizarion Exception", error);
@@ -79,6 +80,8 @@ export default class NewRatingManager extends Component {
                 axios.post(`http://localhost:8080/recipe/${this.state.recipeId}/rating`, data, config)
                     .then(res => {
                         console.log("rating posted");
+                        this.props.editionEnd();
+                        this.props.refreshActive();
                     })
                     .catch(error => {
                         console.log("Authorizarion Exception", error);
@@ -98,8 +101,8 @@ export default class NewRatingManager extends Component {
                         return (
                             <div>
                                 <Form onSubmit={this.handleSubmit(user)}>
-                                    <Form.Group className="Rating" controlId="rate">
-                                        <Form.Label>Rate</Form.Label>
+                                    <Form.Group controlId="rate">
+                                        <Form.Label>Enter your rate</Form.Label>
                                         <ReactStars
                                             count={5}
                                             onChange={this.ratingChange}
@@ -120,8 +123,8 @@ export default class NewRatingManager extends Component {
                                         />
                                     </Form.Group>
                                     <Col md={12}>
-                                        <Button variant="light" type="submit">
-                                            Post rating
+                                        <Button variant="warning" type="submit">
+                                            Save rating
                                     </Button></Col>
                                 </Form>
                             </div>)

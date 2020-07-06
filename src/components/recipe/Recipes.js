@@ -4,7 +4,7 @@ import Image from 'react-bootstrap/Image';
 import { withRouter, useHistory } from 'react-router-dom';
 import { userContext } from '../userContext';
 import NewRecipeManager from "./NewRecipeManager";
-
+import './Recipe.css'
 
 const Recipes = props => {
     const history = useHistory();
@@ -22,24 +22,16 @@ const Recipes = props => {
         <div>
             <userContext.Consumer>
                 {({ user }) => {
-                    // console.log(user);
                     return (
-                        <ListGroup>
+                        <ListGroup className="RecipeList">
                             {props.recipes.map(recipe => {
                                 const link = "/recipe/" + recipe.recipeId;
-                                // console.log(recipe);
                                 return (
                                     <div>
-                                    {(user.id === recipe.authorId) &&
-                                            <button onClick={() => {
-                                                console.log(recipe);
-                                                setIndexes(currentArray => [...currentArray, recipe.id]);
-                                            }}>click</button>}
-                                    {indexes.includes(recipe.id) && <NewRecipeManager recipe={recipe}/>}
-                                    <ListGroup.Item key={recipe.recipeId} action onClick={() => history.push(link)} variant="light">
-                                        <h2>{recipe.name}</h2>
-                                        {recipe.imageUrl && <Image src={recipe.imageUrl} thumbnail />}
-                                    </ListGroup.Item>
+                                        <ListGroup.Item key={recipe.recipeId} action onClick={() => history.push(link)} variant="light">
+                                            <h2>{recipe.name}</h2>
+                                            {recipe.imageUrl && <Image src={recipe.imageUrl} thumbnail />}
+                                        </ListGroup.Item>
                                     </div>
                                 )
                             })}
@@ -49,7 +41,5 @@ const Recipes = props => {
             </userContext.Consumer>
         </div>)
 }
-
-
 
 export default withRouter(Recipes);

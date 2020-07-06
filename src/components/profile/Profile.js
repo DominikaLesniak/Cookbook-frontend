@@ -43,16 +43,16 @@ class Profile extends Component {
                     {({ user, loginUser }) => {
                         return (
                             <div>
-                                <h2>User:</h2>
+                                <h2>User profile</h2>
+                                <AccountActions />
                                 <p>Nick: {user.name}</p>
                                 <p>Email: {user.email}</p>
                                 <p>Points: {user.points}</p>
-                                <p>Owned recipes: {user.ownedRecipeNumber}</p>
+                                <p>Owned recipes: {user.ownedRecipeNumber || 0}</p>
                                 <p>Ratings posted: {user.ratingsNumber}</p>
-                                <AccountActions />
-                                <Button className = "ButtonProp"  onClick={this.handleNewRecipeButtonClick}>Add new recipe</Button>
+                                <Button variant="warning"  onClick={this.handleNewRecipeButtonClick}>Add new recipe</Button>
                                 {this.state.recipes &&
-                                    <div>
+                                    <div className="Book">
                                         <h2>Book recipes:</h2>
                                         <Recipes recipes={this.state.recipes} />
                                     </div>}

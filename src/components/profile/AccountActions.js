@@ -2,8 +2,12 @@ import React, { Component } from 'react';
 import Button from 'react-bootstrap/Button';
 import ChangePasswordManager from './ChangePasswordManager';
 import DeleteAccountManager from './DeleteAccountManager';
+import DeleteDialog from '../DeleteDialog'
+import { userContext } from '../userContext';
+import axios from 'axios';
+import { withRouter } from 'react-router-dom';
 
-export default class AccountActions extends Component {
+class AccountActions extends Component {
     constructor(props) {
         super(props);
         this.state = {
@@ -12,8 +16,6 @@ export default class AccountActions extends Component {
         }
         this.handleChangePassword = this.handleChangePassword.bind(this);
         this.handleDeleteAccount = this.handleDeleteAccount.bind(this);
-    }
-    componentDidMount() {
     }
 
     handleChangePassword() {
@@ -30,13 +32,40 @@ export default class AccountActions extends Component {
         }));
     }
 
+    handleDelete(method) {
+        const config = {
+            headers: {
+                "Authorization": "Bearer " + localStorage.getItem("JWT"),
+                "Content-Type": "application/json"
+            },
+        }
+        axios.delete(`http://localhost:8080/user`, config)
+            .then(res => {
+                console.log("account deleted");
+                method();
+                this.props.history.push("/");
+            })
+            .catch(error => {
+                console.log("Authorizarion Exception", error);
+            });
+    }
+
     render() {
         return (
             <div>
-                <Button variant="warning" onClick={this.handleChangePassword}>Change password</Button>
-                <Button variant="warning" onClick={this.handleDeleteAccount}>Delete account</Button>
-                {this.state.passwordChange && <ChangePasswordManager />}
-                {this.state.accountDelete && <DeleteAccountManager/>}
+                <userContext.Consumer>
+                    {({ logoutUser }) => {
+                        return (
+                            <div>
+                                <Button variant="warning" onClick={this.handleChangePassword}>Change password</Button>
+                                <Button variant="warning" onClick={this.handleDeleteAccount}>Delete account</Button>
+                                {this.state.passwordChange && <ChangePasswordManager />}
+                                {this.state.accountDelete && <DeleteDialog deletedItem="account" onAgreed={() => this.handleDelete(logoutUser)} />}
+                            </div>)
+                    }}
+                </userContext.Consumer>
             </div>);
     }
 }
+
+export default withRouter(AccountActions)
