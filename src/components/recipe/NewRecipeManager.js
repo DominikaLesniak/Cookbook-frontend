@@ -107,6 +107,7 @@ class NewRecipeManager extends Component {
                         .then(res => {
                             console.log("recipe edited");
                             this.props.handleEditRecipe();
+                            this.props.refresh();
                         })
                         .catch(error => {
                             console.log("Authorizarion Exception", error);

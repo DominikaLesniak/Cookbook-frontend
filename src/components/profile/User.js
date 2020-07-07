@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import Recipes from '../recipe/Recipes'
 import axios from 'axios';
 import { withRouter } from 'react-router-dom';
+import './Profile.css';
 import '../recipe/Recipe.css';
 
 class User extends Component {
@@ -15,7 +16,6 @@ class User extends Component {
         }
     }
     componentDidMount() {
-        console.log(this.state.id);
         axios.get(`http://localhost:8080/user/${this.state.id}`)
             .then(res => {
                 const user = res.data;
@@ -46,7 +46,7 @@ class User extends Component {
                 <p>Owned recipes: {this.state.user.ownedRecipeNumber || 0}</p>
                 <p>Ratings posted: {this.state.user.ratingsNumber}</p>
                 {this.state.recipes &&
-                    <div >
+                    <div className="Book">
                         <h2>Book recipes:</h2>
                         <Recipes recipes={this.state.recipes} />
                     </div>}

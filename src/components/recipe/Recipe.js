@@ -34,10 +34,15 @@ class Recipe extends Component {
             delete: false
         }
         this.showRatings = this.showRatings.bind(this);
+        this.refresh = this.refresh.bind(this);
         this.handleEditRecipe = this.handleEditRecipe.bind(this);
         this.handleDeleteRecipe = this.handleDeleteRecipe.bind(this);
     }
     componentDidMount() {
+        this.refresh();
+    }
+
+    refresh() {
         console.log("id: " + this.state.id);
         axios.get("http://localhost:8080/recipe/" + this.state.id)
             .then(res => {
@@ -94,7 +99,7 @@ class Recipe extends Component {
             }
             return (
                 <div>
-                    <NewRecipeManager recipe={recipe} handleEditRecipe={this.handleEditRecipe} />
+                    <NewRecipeManager recipe={recipe} handleEditRecipe={this.handleEditRecipe} refresh={this.refresh}/>
                 </div>
             )
         }
@@ -106,7 +111,8 @@ class Recipe extends Component {
                             return (
                                 <div className="Recipe">
                                     <h2>{this.state.name}</h2>
-                                    <p>by {this.state.authorName}</p>
+                                    <p className="UserName" action onClick={() => this.props.history.push(`/user/${this.state.authorId}`)}>
+                                         by {this.state.authorName}</p>
                                     {(user.id === this.state.authorId) &&
                                         <Button variant="warning" size="sm" onClick={this.handleEditRecipe}>Edit</Button>}
                                     {(user.id === this.state.authorId) &&
@@ -117,7 +123,7 @@ class Recipe extends Component {
                                     }
                                     {this.state.averageRating && <h6>{this.state.averageRating}/5</h6>}
                                     <h4>Ingredients:</h4>
-                                    <ul>
+                                    <ul className="RecipeIngredients">
                                         {this.state.ingredients.map(ingredient =>
                                             <li>{ingredient.name + ": " + ingredient.amount}</li>)}
                                     </ul>

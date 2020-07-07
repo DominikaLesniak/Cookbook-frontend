@@ -29,7 +29,24 @@
     font-style: italic;
 }
 
+.Par:hover {
+    color: skyblue
+}
+
 .ButtonText {
     color: rgb(250, 249, 249);
     font-weight: bold;
+}
+
+.RedInfo{ 
+    margin-top: 5px;
+    background-color: rgb(235, 162, 149);
+    list-style: none;
+    text-align: center;
+}
+
+.Stars {
+    display: "flex";
+    justify-content: "center";
+    align-items: "center"
 }

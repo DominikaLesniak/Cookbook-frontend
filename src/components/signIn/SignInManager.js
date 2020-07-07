@@ -70,7 +70,7 @@ class SignInManager extends Component {
                                 type="text"
                                 name="email"
                                 value={this.state.email}
-                                placeholder="Email lub login"
+                                placeholder="Email or login"
                                 onChange={this.handleChange}
                                 required />
                             <input
@@ -80,7 +80,7 @@ class SignInManager extends Component {
                                 placeholder="Password"
                                 onChange={this.handleChange}
                                 required />
-                            <button type="submit" >Zaloguj</button>
+                            <button type="submit" >Sign in</button>
                         </form>)
                 }}
             </userContext.Consumer>

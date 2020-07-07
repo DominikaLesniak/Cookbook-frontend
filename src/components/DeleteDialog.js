@@ -23,7 +23,7 @@ const DeleteDialog = props => {
                 </Modal.Header>
                 <Modal.Body>Are you sure you want to delete your {props.deletedItem}?</Modal.Body>
                 <Modal.Footer>
-                    <Button variant="primary" onClick={handleClose}>
+                    <Button variant="outline-warning" onClick={handleClose}>
                         Cancel
             </Button>
                     <Button variant="danger" onClick={handleDelete}>

@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import Button from 'react-bootstrap/Button';
 import SignInManager from './SignInManager';
 import SignUpManager from './SignUpManager';
+import './Signing.css';
 
 export default class LoginManager extends Component {
     constructor(props) {
@@ -32,9 +33,10 @@ export default class LoginManager extends Component {
 
     render() {
         return (
-        <div>
-            <Button variant = "warning" onClick={this.handleSignInClick}>Sign in</Button>
-            <Button variant = "warning" onClick={this.handleSignUpClick}>Create account</Button>
+        <div className="Login">
+            <h2>Choose if you want to sign in or create account</h2>
+            <Button variant = "warning" size="lg" onClick={this.handleSignInClick}>Sign in</Button>
+            <Button variant = "warning" size="lg" onClick={this.handleSignUpClick}>Create account</Button>
             <ChooseForm signIn={this.state.signInClicked} signUp={this.state.signUpClicked}/>
         </div>);
     }

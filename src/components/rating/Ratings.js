@@ -18,11 +18,12 @@ const Ratings = props => {
     const [deleteId, setDeleteId] = useState(arr);
     const [refresh, setRefresh] = useState(true);
     const [authors, setAuthors] = useState(arr);
+    const history = useHistory();
     const messagesEndRef = useRef(null)
 
-  const scrollToBottom = () => {
-    messagesEndRef.current.scrollIntoView({ behavior: "smooth" })
-  }
+    const scrollToBottom = () => {
+        messagesEndRef.current.scrollIntoView({ behavior: "smooth" })
+    }
 
     function refreshRatings() {
         if (refresh === true) {
@@ -56,7 +57,8 @@ const Ratings = props => {
                 {({ user }) => {
                     return (
                         <div ref={messagesEndRef}>
-                            {(user === undefined || !authors.includes(user.id)) && <NewRatingManager recipeId={props.recipeId} editionEnd={() => setEditId([])} refreshActive={() => setRefresh(true)} />}
+                            {(user.id !== undefined && !authors.includes(user.id)) && <NewRatingManager recipeId={props.recipeId} editionEnd={() => setEditId([])} refreshActive={() => setRefresh(true)} />}
+                            {user.id === undefined && <li className="RedInfo">You have to be signed user in order to rate recipe</li>}
                             {ratings && <ListGroup >
                                 {ratings.map(rating => {
                                     if (editId.includes(rating.id)) {
@@ -73,7 +75,7 @@ const Ratings = props => {
                                             <ListGroup.Item className="Rating" key={rating.authorId} variant="light">
                                                 <Row>
                                                     <Col md={8}>
-                                                        <p className="Par">Author: {rating.authorName}</p>
+                                                        <p className="Par" action onClick={() => history.push(`/user/${rating.authorId}`)} >Author: {rating.authorName}</p>
                                                     </Col>
                                                     <Col md={2}>
                                                         {(user.id === rating.authorId) &&

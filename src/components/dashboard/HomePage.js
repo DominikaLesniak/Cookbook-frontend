@@ -1,23 +1,29 @@
 import React, { Component } from 'react';
-import StyledExample from '../StyledExample';
-import Recipes from '../recipe/Recipes'
+import Form from 'react-bootstrap/Form';
+import FormControl from 'react-bootstrap/FormControl';
+import Recipes from '../recipe/Recipes';
 import axios from 'axios';
-import {withRouter } from 'react-router-dom';
+import { withRouter } from 'react-router-dom';
+import Button from 'react-bootstrap/Button';
 
 class HomePage extends Component {
     constructor(props) {
         super(props);
 
         this.state = {
+            query: "",
             recipes: []
         }
+        this.refresh = this.refresh.bind(this);
+        this.handleChange = this.handleChange.bind(this);
+        this.submitQuery = this.submitQuery.bind(this);
     }
-    componentDidMount() {
+
+    refresh() {
         axios.get("http://localhost:8080/recipe", {
             params: {
-                // namePattern: "pancakes",
                 jsonRequest: {
-                    namePattern: ""
+                    namePattern: this.state.query
                 }
             }
         })
@@ -32,11 +38,29 @@ class HomePage extends Component {
             });
     }
 
+    componentDidMount() {
+        this.refresh();
+    }
+
+    handleChange(event) {
+        this.setState({
+            [event.target.name]: event.target.value
+        })
+    }
+
+    submitQuery(event) {
+        event.preventDefault();
+        this.refresh();
+    }
 
     render() {
         return (
             <div>
-                <h1>Our recipes:</h1>
+                <Form inline className="SearchForm" onSubmit={this.submitQuery}>
+                    <FormControl type="text" placeholder="Search" onChange={this.handleChange}
+                            name="query" value={this.state.query}/>
+                    <Button variant="warning" onClick={this.refresh}>Search</Button>
+                </Form>
                 {this.state.recipes && <Recipes recipes={this.state.recipes} />}
             </div>);
     }

@@ -97,24 +97,24 @@ class SignUpManager extends Component {
                     type="text"
                     name="username"
                     value={this.state.username}
-                    placeholder="Nazwa użytkownika"
+                    placeholder="Username"
                     onChange={this.handleChange}
                     required />
                 <input
                     type="password"
                     name="password"
                     value={this.state.password}
-                    placeholder="Hasło"
+                    placeholder="Password"
                     onChange={this.handleChange}
                     required />
                 <input
                     type="password"
                     name="password_confirm"
                     value={this.state.password_confirm}
-                    placeholder="Potwierdź hasło"
+                    placeholder="Confirm password"
                     onChange={this.handleChange}
                     required />
-                <button type="submit">Zarejestruj</button>
+                <button type="submit">Sign up</button>
             </form>
                     )}}
             </userContext.Consumer>

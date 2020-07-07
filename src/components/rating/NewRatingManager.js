@@ -104,6 +104,7 @@ export default class NewRatingManager extends Component {
                                     <Form.Group controlId="rate">
                                         <Form.Label>Enter your rate</Form.Label>
                                         <ReactStars
+                                            className="Stars"
                                             count={5}
                                             onChange={this.ratingChange}
                                             size={24}

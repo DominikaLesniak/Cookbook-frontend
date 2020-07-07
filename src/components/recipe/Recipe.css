@@ -6,11 +6,21 @@
     width: auto;
 }
 
+.RecipeIngredients {
+    max-width: 150px;
+    text-align: center;
+    margin-left: 40%;
+    align-content: center;
+    list-style: none;
+}
+
 .Recipe {
     background-color: white;
-    margin-left: 10%;
-    margin-right: 10%;
-    margin-top: 5%;
+    margin-left: 15%;
+    margin-right: 15%;
+    margin-top: 10px;
+    padding-bottom: 5px;
+    padding: 15px;
     -webkit-box-shadow: 0px 5px 50px -11px rgba(0,0,0,0.91);
     -moz-box-shadow: 0px 5px 50px -11px rgba(0,0,0,0.91);
     box-shadow: 0px 5px 50px -11px rgba(0,0,0,0.91);
@@ -18,11 +28,16 @@
 
 .RecipeList {
     background-color: white;
-    margin-left: 10%;
-    margin-right: 10%;
+    margin-left: 15%;
+    margin-right: 15%;
     margin-top: 10px;
     padding-bottom: 5px;
+    
     -webkit-box-shadow: 0px 5px 50px -11px rgba(0,0,0,0.91);
     -moz-box-shadow: 0px 5px 50px -11px rgba(0,0,0,0.91);
     box-shadow: 0px 5px 50px -11px rgba(0,0,0,0.91);
+}
+
+.UserName:hover {
+    color: skyblue
 }
